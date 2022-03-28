@@ -27,9 +27,9 @@ def login_required(func):
     return inner
 # 车牌识别
 def Park_discern(image):
-        APP_ID = '23980831'
-        API_KEY = 'ZkIGNfLuVypZnHZAnggtTvt0'
-        SECRET_KEY = 'fwV48fQdGZ03MGRltKv8y9paiLePzBqq'
+        APP_ID = '#######'
+        API_KEY = '#############'
+        SECRET_KEY = '########################'
         # 创建客户端对象
         client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
         # 建立连接的超时时间，单位为毫秒
