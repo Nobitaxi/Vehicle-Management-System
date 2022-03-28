@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑用户</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="margin: 0 15%">
+                            <div class="card-header"><h4>用户信息</h4></div>
+                            <div class="card-body">
+                            {% block user_form %}
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>姓名</label>
+                                        <input class="form-control" type="text" name="name" value="{{ user_obj.name }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>电话</label>
+                                        <input class="form-control" type="text" name="phone" value="{{ user_obj.phone }}">
+                                    </div>
+                                    <span style="color: red">{{ error1 }}</span>
+                                    <div class="form-group">
+                                        <label>车牌号</label>
+                                        <input class="form-control" type="text" name="carnum" value="{{ user_obj.carnum }}">
+                                    </div>
+                                    <span style="color: red">{{ error2 }}</span>
+                                    <div class="form-group">
+                                        <label>选择套餐</label>
+                                        <input class="form-control" readonly= "readonly" type="text" name="level" value=
+                                                "{% if user_obj.level == 1 %}月卡
+                                                {% elif user_obj.level == 2 %}季卡
+                                                {% elif user_obj.level == 3 %}半年卡
+                                                {% else %}年卡
+                                                {% endif %}">
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-label btn-primary" id="success">
+                                            <label>
+                                                <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                            </label> 确认提交
+                                        </button>
+                                        <a class="btn btn-label btn-warning" href="/user_renewal/?id={{ user_obj.id }}">
+                                            <label>
+                                                <i class="mdi mdi-currency-cny"></i>
+                                            </label> 选择续费</a>
+                                    </div>
+                                </form>
+                            {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+<script>
+    $('#success').on('click', function(){
+    lightyear.loading('show');
+    // 假设ajax提交操作
+    setTimeout(function() {
+        lightyear.loading('hide');
+        lightyear.notify('修改成功，页面即将自动跳转~', 'success', 3000);
+    }, 1e3)
+});
+</script>
+</body>
+</html>

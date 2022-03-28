@@ -1,0 +1,53 @@
+{% extends 'user_edit.html' %}
+{% block user_form %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>姓名</label>
+            <input class="form-control" type="text" readonly="readonly" name="name" value="{{ user_obj.name }}">
+        </div>
+        <div class="form-group">
+            <label>电话</label>
+            <input class="form-control" type="text" readonly="readonly" name="phone" value="{{ user_obj.phone }}">
+        </div>
+        <div class="form-group">
+            <label>车牌号</label>
+            <input class="form-control" type="text" readonly="readonly" name="carnum" value="{{ user_obj.carnum }}">
+        </div>
+
+        <div class="form-group">
+            <label>选择套餐</label>
+            <div>
+                <label class="lyear-radio radio-inline radio-primary"
+                       for="example-inline-radio1">
+                    <input type="radio" id="example-inline-radio1"
+                           name="vip-radios" value="1">
+                    <span>月卡</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary" for="example-inline-radio2">
+                    <input type="radio" id="example-inline-radio2"
+                           name="vip-radios" value="2">
+                    <span>季卡</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary" for="example-inline-radio3">
+                    <input type="radio" id="example-inline-radio3"
+                           name="vip-radios" value="3">
+                    <span>半年卡</span>
+                </label>
+                <label class="lyear-radio radio-inline radio-primary" for="example-inline-radio4">
+                    <input type="radio" id="example-inline-radio4"
+                           name="vip-radios" value="4">
+                    <span>年卡</span>
+                </label>
+            </div>
+        </div>
+        <span style="color: red">{{ error }}</span>
+        <div class="form-group">
+            <button class="btn btn-label btn-primary">
+                <label>
+                    <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                </label> 确认提交
+            </button>
+        </div>
+    </form>
+{% endblock %}

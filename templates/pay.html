@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div style="width: 50%;height: 500px;min-width: 470px; margin: 0 25%; text-align: center">
+                    <div style="width: 30%; height: 200px; float: left"><img src="/code/" alt=""
+                    ></div>
+                    <div style="width: 70%; height: 200px; float: right; line-height: 50px">
+                        <label style="width: 40%">车牌号<input class="form-control" type="text" value="
+{{ carnum }}" style="text-align: center" readonly="readonly"></label>
+                        <label style="width: 40%">收费金额<input class="form-control" type="text" value="
+{{ money }}元" style="text-align: center" readonly="readonly"></label>
+                        <label style="width: 40%">用户类型<input class="form-control" type="text" value="{{ level }}"
+                                                             style="text-align: center" readonly="readonly"
+                        ></label>
+                        <label style="width: 40%">停车时长<input class="form-control" type="text" value="{{ park_time }}"
+                        style="text-align: center" readonly="readonly"></label>
+                    </div>
+                    <div style="width: 30%; float: left">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ carnum }}" name="carnum">
+                            <input type="hidden" value="{{ money }}">
+                            <button class="btn btn-label btn-primary" id="success">
+                                                <label>
+                                                    <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                                </label> 完成支付
+                                            </button>
+                        </form>
+                    </div>
+                    <div style="width: 70%; float: right;display: none" id="deadline">
+                        <label class="form-inline" >到期时间:<input style="text-align: center" class="form-control"
+                                                               type="text" value="{{ deadline }}" id="input_deadline"
+                                                               readonly="readonly"></label>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+    $('#success').on('click', function(){
+    lightyear.loading('show');
+    setTimeout(function() {
+        lightyear.loading('hide');
+        lightyear.notify('支付成功，页面即将自动跳转~', 'success', 3000);
+    }, 1e3)
+});
+var deadline = document.getElementById('input_deadline').value;
+if(deadline !== 'None'){
+    document.getElementById('deadline').style.display = 'block';
+}
+
+</script>
+</body>
+</html>

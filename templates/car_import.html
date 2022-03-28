@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>入口监测</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="margin: 0 15%">
+{#                            <div class="card-header"><h4>用户信息</h4></div>#}
+                            <div class="card-body">
+                            <div class="form-group">
+                                 <label>检测图片</label>
+                                <img src="/media/{{ carport_url }}" alt="" style="width: 312px; height: 175px">
+                            </div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>检测结果</label>
+                                        <input class="form-control" type="text" name="carnum" value="{{ carnum }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary">提交</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+</body>
+</html>

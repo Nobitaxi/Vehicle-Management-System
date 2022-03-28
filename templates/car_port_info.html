@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>停车状况</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" >
+                                        {% block car_paging %}
+                                        <thead>
+                                        <tr>
+                                            <th>车位号</th>
+                                            <th>车牌号</th>
+                                            <th>起始时间</th>
+                                            <th>类别</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for car in all_cars %}
+                                            <tr>
+                                            <td>{{car.carport}}</td>
+                                            <td>{{ car.carnum }}</td>
+                                            <td>{{ car.begintime|date:"Y-m-d H:i" }}</td>
+                                            <td>
+                                                {% if car.genre == 1 %}会员用户
+                                                {% else %}临时用户
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    {% endblock %}
+                                    </table>
+                                </div>
+                            <!--  分页代码  -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <!--  用模板过滤标签，防止对HTML代码转义-->
+                                    {{ page_nav|safe }}
+                                </ul>
+                            </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+    <!--End 页面主要内容-->
+</body>
+</html>

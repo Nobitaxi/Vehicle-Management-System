@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车位使用情况</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<main class="lyear-layout-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h4>A区：1~25</h4>
+                        <ul class="card-actions">
+                            <li>
+                                <a href="/car_port_info/1/"> <i class="mdi mdi-more"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>使用情况</strong>
+                            <strong style="float: right">{{ A_cars_use }}/{{ Asum }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-header bg-danger">
+                        <h4>B区：26~50</h4>
+                        <ul class="card-actions">
+                            <li>
+                                <a href="/car_port_info/2/"> <i class="mdi mdi-more"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>使用情况</strong>
+                            <strong style="float: right">{{ B_cars_use }}/{{ Bsum }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4>C区：51~75</h4>
+                        <ul class="card-actions">
+                            <li>
+                                <a href="/car_port_info/3/"> <i class="mdi mdi-more"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>使用情况</strong>
+                            <strong style="float: right">{{ C_cars_use }}/{{ Csum }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h4>D区：76~100</h4>
+                        <ul class="card-actions">
+                            <li>
+                                <a href="/car_port_info/4/"> <i class="mdi mdi-more"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>使用情况</strong>
+                            <strong style="float: right">{{ D_cars_use }}/{{ Dsum }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>车牌号</th>
+                    <th>停车位</th>
+                    <th>进入时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ci in car_in_record %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ ci.carnum }}</td>
+                    <td>{{ ci.carport }}</td>
+                    <td>{{ ci.begintime|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>车牌号</th>
+                    <th>停车位</th>
+                    <th>离开时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for co in car_out_record %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ co.carnum }}</td>
+                    <td>{{ co.carport }}</td>
+                    <td>{{ co.endtime|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" value="{{ is_message }}" id="is_message">
+{#        <div class="alert alert-success alert-dismissible fade in" role="alert" id="car_insert">#}
+{#                <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                    <span aria-hidden="true">×</span>#}
+{#                </button>#}
+{#                {{ message }}#}
+{#            </div>#}
+    </div>
+</main>
+<script>
+    window.onload = function () {
+        var is_message = document.getElementById('is_message').value;
+        if (is_message == 1) {
+            lightyear.loading('show');
+            setTimeout(function () {
+                lightyear.loading('hide');
+                lightyear.notify('{{ message }}', 'success', 3000, 'top');
+            }, 1e3)
+        }
+    };
+</script>
+</body>
+</html>

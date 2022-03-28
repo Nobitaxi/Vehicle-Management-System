@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆记录</title>
+</head>
+<body>
+{% extends 'car_port_info.html' %}
+{% block car_paging %}
+    <thead>
+    <tr>
+        <th>车牌号</th>
+        <th>起始时间</th>
+        <th>离开时间</th>
+        <th>停车时间</th>
+        <th>类别</th>
+        <th>收费</th>
+    </tr>
+    </thead>
+    <tbody>
+    <script>var i = 1;</script>
+    {% for car in all_cars %}
+        <tr>
+            <td>{{ car.carnum }}</td>
+            <td>{{ car.begintime|date:"Y-m-d H:i" }}</td>
+            <td>{{ car.endtime|date:"Y-m-d H:i" }}</td>
+            <td>
+                <script>
+                    var begintime = document.getElementsByTagName('table')[0].rows[i].cells[1].innerHTML;
+                    var endtime = document.getElementsByTagName('table')[0].rows[i].cells[2].innerHTML;
+                    var btime = new Date(begintime.replace(/-/,'/'));
+                    var etime = new Date(endtime.replace(/-/,'/'));
+                    var time = Math.abs(btime.getTime() - etime.getTime());
+                    var days = parseInt(time / (24*60*60*1000));
+                    var hours = parseInt(time % (24 * 60 * 60 * 1000) / (60 * 60 * 1000));
+                    var minutes = parseInt(time % (60 * 60 * 1000) / (60 * 1000));
+                    var time_span = days+'天'+hours+'小时'+minutes+'分钟';
+                    document.getElementsByTagName('table')[0].rows[i].cells[3].innerHTML = time_span;
+                    i+=1;
+                </script>
+            </td>
+            <td>
+                {% if car.genre == 1 %}会员用户
+                {% else %}临时用户
+                {% endif %}
+            </td>
+            <td>{{ car.money }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+{% endblock %}
+</body>
+</html>

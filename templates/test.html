@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}入口监测{% endblock %}</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="margin: 0 15%">
+                            <div class="card-body" style="text-align: center">
+                            <div class="form-group">
+                                <form action="" enctype="multipart/form-data" method="post">
+                                    {% csrf_token %}
+                                    <label for="car_img"><img id="imgforshow" src="/static/imgs/intro.jpg"
+                                                                 style="width: 350px; height: 200px; border:
+                                                                 1px solid black; cursor: pointer"></label>
+                                    <input type="file" name="car_img" id="car_img" style="display: none;"><br>
+                                    <span style="color: red">{{ error }}</span>
+                                    <div class="form-group">
+                                        <button class="btn btn-w-md btn-round btn-info">检测</button>
+                                    </div>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<script src="/static/js/jquery-3.4.1.min.js"></script>
+<script>
+    $("#car_img").change(function () {
+        var rd_img = new FileReader();
+        rd_img.readAsDataURL(this.files[0]);
+        rd_img.onload = function (){
+            $("#imgforshow").attr("src", rd_img.result);
+        };
+    });
+</script>
+</body>
+</html>

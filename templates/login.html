@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
+
+</head>
+<body>
+<div class="lowin">
+		<div class="lowin-brand">
+            <span class="mdi-account"></span>
+			<img src="/static/imgs/logo.jpg" alt="logo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form action="" method="post">
+                        {% csrf_token %}
+						<p style="font-size: 25px">车辆管理系统</p>
+						<div class="lowin-group">
+							<label>账号 </label>
+							<input type="text"  name="account" class="lowin-input">
+						</div>
+						<div class="lowin-group password-group">
+							<label>密码 </label>
+							<input type="password" name="pwd"  class="lowin-input">
+						</div>
+                        <p style="color: red">{{ error }}</p>
+						<button class="lowin-btn login-btn">
+							登录
+						</button>
+					</form>
+				</div>
+			</div>
+	</div>
+</div>
+</body>
+</html>

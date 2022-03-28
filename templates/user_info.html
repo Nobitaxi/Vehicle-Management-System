@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+</head>
+<body>
+{% include 'nav.html' %}
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-toolbar clearfix">
+                                <form class="pull-right search-bar" method="post" action="" role="form">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <input type="hidden" name="search_field" id="search-field"
+                                                   value="user_name">
+                                            <button class="btn btn-default dropdown-toggle" id="search-btn"
+                                                    data-toggle="dropdown" type="button" aria-haspopup="true"
+                                                    aria-expanded="false" name="dropdown">
+                                                用户姓名 <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a tabindex="-1" href="javascript:void(0)"
+                                                       data-field="user_name">用户姓名</a>
+                                                </li>
+                                                <li><a tabindex="-1" href="javascript:void(0)"
+                                                       data-field="car_num">用户车牌号</a></li>
+                                            </ul>
+                                        </div>
+                                        <input type="text" class="form-control" value="" name="keyword"
+                                               placeholder="请输入...">
+                                    </div>
+                                </form>
+                                <div class="toolbar-btn-action">
+                                    <a class="btn btn-primary m-r-5" href="/user_add/"><i class="mdi mdi-plus"></i>
+                                        新增</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" >
+                                        <thead>
+                                        <tr>
+                                            <th >姓名</th>
+                                            <th>车牌号</th>
+                                            <th>联系方式</th>
+                                            <th>到期时间</th>
+                                            <th>会员种类</th>
+                                            <th>操作</th>
+                                            <th style="display: none"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in all_users %}
+                                            <tr>
+                                                <td>{{ user.name }}</td>
+                                                <td>{{ user.carnum }}</td>
+                                                <td>{{ user.phone }}</td>
+                                                <td>{{ user.endtime|date:"Y-m-d H:i" }}</td>
+                                                <td>{% if user.level == 1 %}月卡
+                                                    {% elif user.level == 2  %}季卡
+                                                    {% elif user.level == 3 %}半年卡
+                                                    {% elif user.level == 4 %}年卡
+                                                    {% else %}已过期
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-xs btn-default btn_edit"
+                                                           href="/user_edit/?id={{ user.id }}"
+                                                           title="编辑"
+                                                           data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                                                        <a class="btn btn-xs btn-default btn_del" title="删除"
+                                                           data-toggle="tooltip"><i
+                                                                class="mdi mdi-window-close"></i></a>
+                                                    </div>
+                                                </td>
+                                                <td style="display: none">{{ user.id }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+
+                                    </table>
+
+{#                                <td><input type="text" id="URL_check" value="{{ URL_check }}"></td>#}
+                                </div>
+
+                            <!--  分页代码  -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <!--  用模板过滤标签，防止对HTML代码转义-->
+                                    {{ page_nav|safe }}
+                                </ul>
+                            </nav>
+                            <div style="text-align: center">{{ error }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+    <!--End 页面主要内容-->
+<script type="text/javascript">
+$(function(){
+    $('.search-bar .dropdown-menu a').click(function() {
+        var field = $(this).data('field') || '';
+        $('#search-field').val(field);
+        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+});
+</script>
+<!--  引用SweetAlert组件  -->
+<link rel="stylesheet" href="/static/css/sweetalert.css">
+<script type="text/javascript" src="/static/js/sweetalert.min.js"></script>
+<script>
+    //找到"删除"按钮绑定的事件
+    $('.btn_del').on('click', function () {
+        //取得"删除"按钮所在行
+        var $row = $(this).parent().parent().parent();
+        var Id = $row.children().eq(6).text();
+        swal({
+            title: '是否真的要删除该记录?',
+            type: 'warning',
+            confirmButtonColor: '#d33',
+            confirmButtonClass: 'btn btn-danger',
+            confirmButtonText: '确认',
+            showCancelButton: true,
+            cancelButtonText: '取消',
+            //单击"确认"按钮后模态窗口仍然保留就设置为false
+            closeOnConfirm: false,
+            //showLoaderOnConfirm 默认为false
+            //当该参数设为true的时候，单击"确认"按钮显示正在加载的图标
+            showLoaderOnConfirm: true
+        },
+        //单击"确认"按钮后调用的函数
+            function () {
+                //向后台发送删除的请求
+                $.ajax({
+                    url: '/user_del/',
+                    type: 'get',
+                    data: {'id':Id},
+                    success:function (arg){
+                        swal(arg, '删除成功!', 'success');
+                        $row.remove();
+                    }
+                });
+                {#location.reload();#}
+            });
+    })
+</script>
+<!-- 搜索时修改URL  -->
+{#<script>#}
+{#    var url_check = document.getElementById("URL_check").value;#}
+{#    if (url_check.toString() == "1")#}
+{#    {#}
+{#        alert(url_check);#}
+        {#window.location.assign('/user_paging/');#}
+{#        window.history.pushState(null, null, '/user_paging/')#}
+{#    }#}
+{#</script>#}
+</body>
+
+</html>
